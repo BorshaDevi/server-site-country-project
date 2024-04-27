@@ -1,5 +1,5 @@
 const express =require('express')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors=require('cors')
 require('dotenv').config()
 const app=express()
@@ -26,11 +26,33 @@ async function run() {
     await client.connect();
   
     const countryCollection = client.db("countryDB").collection("country");
+    // app.get('/addSpots/:Id',async(req,res)=> {
+    //   const id=req.params.Id
+    //   const query = { _id: new ObjectId(id) };
+    //   const result = await countryCollection.findOne(query);
+    //   res.send(result)
+    // })
+    app.get('/addSpots',async(req,res)=>{
+      const cursor = countryCollection.find();
+      const result=await cursor.toArray()
+      res.send(result)
+    })
+    app.get('/addSpots/:email',async(req,res)=>{
+         const email=req.params.email;
+         const query = { email: email };
+         const result = countryCollection .find(query);
+         const data=await result.toArray()
+         res.send(data)
+    })
     app.post('/addSpots',async(req,res) => {
       const user=req.body;
       console.log(user)
       const result = await countryCollection.insertOne(user);
       res.send(result)
+    })
+    app.put('/addSpots/:id',(req,res) => {
+      const id =req.params.id
+      const filter = { _id : new ObjectId(id)};
     })
     
     // Send a ping to confirm a successful connection
