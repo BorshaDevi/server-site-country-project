@@ -26,18 +26,18 @@ async function run() {
     await client.connect();
   
     const countryCollection = client.db("countryDB").collection("country");
-    // app.get('/addSpots/:Id',async(req,res)=> {
-    //   const id=req.params.Id
-    //   const query = { _id: new ObjectId(id) };
-    //   const result = await countryCollection.findOne(query);
-    //   res.send(result)
-    // })
+    app.get('/addSpots/:Id',async(req,res)=> {
+      const id=req.params.Id
+      const query = { _id: new ObjectId(id) };
+      const result = await countryCollection.findOne(query);
+      res.send(result)
+    })
     app.get('/addSpots',async(req,res)=>{
       const cursor = countryCollection.find();
       const result=await cursor.toArray()
       res.send(result)
     })
-    app.get('/addSpots/:email',async(req,res)=>{
+    app.get('/addSpotsbyemail/:email',async(req,res)=>{
          const email=req.params.email;
          const query = { email: email };
          const result = countryCollection .find(query);
@@ -50,12 +50,35 @@ async function run() {
       const result = await countryCollection.insertOne(user);
       res.send(result)
     })
-    app.put('/addSpots/:id',(req,res) => {
+    app.put('/addSpots/:id',async(req,res) => {
       const id =req.params.id
+      const userBody=req.body
       const filter = { _id : new ObjectId(id)};
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          description:userBody.description,
+          photo:userBody.photo,
+          season:userBody.season,
+          spotName:userBody.spotName,
+          country:userBody.country,
+          location:userBody.location,
+          time:userBody.time,
+          perYear:userBody.perYear,
+          cost:userBody.cost,
+        },
+      };
+      const result = await countryCollection.updateOne(filter, updateDoc, options);
+      res.send(result)
+    })
+    app.delete('/addSpots/:Id',async(req,res)=>{
+      const id=req.params.Id
+      const query = { _id: new ObjectId(id) };
+      const result = await countryCollection.deleteOne(query);
+      res.send(result)
     })
     
-    // Send a ping to confirm a successful connection
+    
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
