@@ -44,6 +44,17 @@ async function run() {
          const data=await result.toArray()
          res.send(data)
     })
+    app.get('/addSpotsSort',async(req,res)=> {
+      // const options = {
+        
+      //   sort: { cost: 1 },
+       
+      //   projection: { _id: 0, cost: 1, },
+      // };
+      const result = countryCollection.find().sort({ cost: 1}).project({ _id: 0, cost: 1 });
+      
+      res.send(result)
+    })
     app.post('/addSpots',async(req,res) => {
       const user=req.body;
       console.log(user)
