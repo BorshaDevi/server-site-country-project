@@ -26,6 +26,8 @@ async function run() {
     await client.connect();
   
     const countryCollection = client.db("countryDB").collection("country");
+    const challengesCollection = client.db("challengesDB").collection("challenges");
+
     app.get('/addSpots/:Id',async(req,res)=> {
       const id=req.params.Id
       const query = { _id: new ObjectId(id) };
@@ -44,17 +46,31 @@ async function run() {
          const data=await result.toArray()
          res.send(data)
     })
-    app.get('/addSpotsSort',async(req,res)=> {
-      // const options = {
-        
-      //   sort: { cost: 1 },
-       
-      //   projection: { _id: 0, cost: 1, },
-      // };
-      const result = countryCollection.find().sort({ cost: 1}).project({ _id: 0, cost: 1 });
-      
+    app.get('/challenge',async(req,res)=>{
+      const cursor = challengesCollection.find();
+      const result=await cursor.toArray()
+      console.log(result)
       res.send(result)
     })
+
+
+    app.get('/challenge/:Id',async(req,res)=> {
+      const id=req.params.Id
+      const query = { _id: new ObjectId(id) };
+      const result = await challengesCollection.findOne(query);
+      res.send(result)
+    })
+    // app.get('/addSpotsSort',async(req,res)=> {
+    //   // const options = {
+        
+    //   //   sort: { cost: 1 },
+       
+    //   //   projection: { _id: 0, cost: 1, },
+    //   // };
+    //   const result = countryCollection.find().sort({ cost: 1}).project({ _id: 0, cost: 1 });
+      
+    //   res.send(result)
+    // })
     app.post('/addSpots',async(req,res) => {
       const user=req.body;
       console.log(user)
