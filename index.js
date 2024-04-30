@@ -100,8 +100,8 @@ async function run() {
     })
     app.delete('/addSpots/:Id',async(req,res)=>{
       const id=req.params.Id
-      const query = { _id: new ObjectId(id) };
-      const result = await countryCollection.deleteOne(query);
+      const value= { _id: new ObjectId(id) };
+      const result = await countryCollection.deleteOne(value);
       res.send(result)
     })
     
