@@ -5,7 +5,14 @@ require('dotenv').config()
 const app=express()
 const port =process.env.PORT || 5000
 
-app.use(cors())
+
+
+ const corsConfig = {
+  origin: ["http://localhost:5173",'https://server-site-country-project-ih6092fcv-borshadevis-projects.vercel.app'],
+  credentials: true,
+};
+app.use(cors(corsConfig));
+// app.use(cors())
 app.use(express.json())
 
 
@@ -19,11 +26,18 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
-
+client
+  .connect()
+  .then(() => {
+    console.log("MongoDB Connected");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
   
     const countryCollection = client.db("countryDB").collection("country");
     const challengesCollection = client.db("challengesDB").collection("challenges");
@@ -106,8 +120,8 @@ async function run() {
     })
     
     
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // await client.db("admin").command({ ping: 1 });
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
