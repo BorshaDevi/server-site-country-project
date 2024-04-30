@@ -60,17 +60,17 @@ async function run() {
       const result = await challengesCollection.findOne(query);
       res.send(result)
     })
-    // app.get('/addSpotsSort',async(req,res)=> {
-    //   // const options = {
+    app.get('/addSpotsSort',async(req,res)=> {
+      // const options = {
         
-    //   //   sort: { cost: 1 },
+      //   sort: { cost: 1 },
        
-    //   //   projection: { _id: 0, cost: 1, },
-    //   // };
-    //   const result = countryCollection.find().sort({ cost: 1}).project({ _id: 0, cost: 1 });
+      //   projection: { _id: 0, cost: 1, },
+      // };
+      const result = countryCollection.find().sort({ cost: 1}).project({ _id: 0, cost: 1 });
       
-    //   res.send(result)
-    // })
+      res.send(result)
+    })
     app.post('/addSpots',async(req,res) => {
       const user=req.body;
       console.log(user)
