@@ -7,11 +7,12 @@ const port =process.env.PORT || 5000
 
 // 'https://server-site-country-project-ih6092fcv-borshadevis-projects.vercel.app'
 
- const corsConfig = {
-  origin: ["http://localhost:5173",'https://country-project-1016e.web.app/'],
+const corsConfig = {
+  origin: '*',
   credentials: true,
-};
-app.use(cors(corsConfig));
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+  }
+  app.use(cors(corsConfig))
 // app.use(cors())
 app.use(express.json())
 
