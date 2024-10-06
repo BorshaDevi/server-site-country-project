@@ -82,13 +82,14 @@ async function run() {
        
       //   projection: { _id: 0, cost: 1, },
       // };
-      const result = countryCollection.find().sort({ cost: 1}).project({ _id: 0, cost: 1 });
+      const result = db.country.find().sort({ cost: 1});
       
       res.send(result)
+      console.log(result)
     })
     app.post('/addSpots',async(req,res) => {
       const user=req.body;
-      console.log(user)
+      
       const result = await countryCollection.insertOne(user);
       res.send(result)
     })
