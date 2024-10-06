@@ -56,13 +56,28 @@ async function run() {
     })
     app.get('/addSpotsbyemail/:email',async(req,res)=>{
          const email=req.params.email;
-         const query = { email: email };
-         const result = countryCollection .find(query);
-         const data=await result.toArray()
-         res.send(data)
+        
+         const queryData = { email: email };
+    
+    
+      
+       try{
+        const result = countryCollection .find(queryData);
+        const data=await result.toArray()
+        res.send(data)
+       }catch(error){
+        console.log(error)
+        res.status(500).send('server error')
+       }
     })
     app.get('/challenge',async(req,res)=>{
-      const cursor = challengesCollection.find();
+      const filter=req.query.filter
+      console.log(filter)
+      
+      let query={}
+      if(filter) query={season:filter}
+
+      const cursor = challengesCollection.find(query);
       const result=await cursor.toArray()
       console.log(result)
       res.send(result)
