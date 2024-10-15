@@ -2,17 +2,27 @@ const express =require('express')
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors=require('cors')
 require('dotenv').config()
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const app=express()
 const port =process.env.PORT || 5000
 
-// 'https://server-site-country-project-ih6092fcv-borshadevis-projects.vercel.app'
+
+
+// const apiProxy = createProxyMiddleware({
+//   target: 'http://localhost:5173',
+//   changeOrigin: true,
+// });
 
 const corsConfig = {
-  origin: '*',
+  origin:'*',
+  // origin: ['http://localhost:5173' , 'https://country-project-1016e.web.app'],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  
   }
-  app.use(cors(corsConfig))
+  
+  // app.use('/api',apiProxy)
+  app.use(cors(corsConfig ))
 // app.use(cors())
 app.use(express.json())
 
